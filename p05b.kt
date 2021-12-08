@@ -19,27 +19,26 @@ fun main() {
     max_y = if (this_line[3] > max_y) this_line[3] else max_y
   }
   println("${lines.size} in $max_x x $max_y")
-  var count = 0
-  for (x in 0..max_x) {
-    for (y in 0..max_y) {
-      var s = lines.filter{
-        // Vertical
-        if (it[0] == it[2] && it[0] == x &&
-            ((it[1] <= y && it[3] >= y) ||
-             (it[1] >= y && it[3] <= y))) true
-        // Horizontal
-        else if (it[1] == it[3] && it[1] == y &&
-            ((it[0] <= x && it[2] >= x) ||
-             (it[0] >= x && it[2] <= x))) true
-        // Diagonal
-        else if (abs(it[0]-x) == abs(it[1]-y) &&
-                 abs(it[2]-x) == abs(it[3]-y) &&
-                 ((it[0] <= x && it[2] >= x) || (it[0] >= x && it[2] <= x))) true
-        else false
-      }
-      // if (s.any()) println("($x,$y) is touched by: $s")
-      if (s.size >= 2) count++
+  var counts = mutableMapOf<String, Int>()
+  lines.forEach{
+    val x_inc = when (it[2]-it[0]) {
+      in 1..max_x -> 1
+      in -max_x..-1 -> -1
+      else -> 0
+    }
+    val y_inc = when (it[3]-it[1]) {
+      in 1..max_y -> 1
+      in -max_y..-1 -> -1
+      else -> 0
+    }
+    var x = it[0]
+    var y = it[1]
+    while (true) {
+      counts["$x,$y"] = (counts["$x,$y"] ?: 0) + 1
+      if (x == it[2] && y == it[3]) break;
+      x += x_inc
+      y += y_inc
     }
   }
-  println(count)
+  println(counts.values.filter{ it >= 2 }.size)
 }
