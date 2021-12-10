@@ -17,3 +17,4 @@ I am also trying to code on Windows with [Sublime Text 4](https://www.sublimetex
   - after you've selected them all, go to "git: quick commit" and hit enter
   - type in a good commit message
   - ctrl-shift-P and "git: push" to push to Github
+* fold/reduce on collections is fun and powerful

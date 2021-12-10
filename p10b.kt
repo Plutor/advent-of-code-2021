@@ -17,17 +17,17 @@ fun main() {
         return@line
       }
     }
-    var score = 0L
-    stack.asReversed().forEach {
-      score = score * 5 + when(it) {
-        '(' -> 1
-        '[' -> 2
-        '{' -> 3
-        '<' -> 4
-        else -> 0
+    scores.add(
+      stack.asReversed().fold(0) { score, c ->
+        score * 5 + when(c) {
+          '(' -> 1
+          '[' -> 2
+          '{' -> 3
+          '<' -> 4
+          else -> 0
+        }
       }
-    }
-    scores.add(score)
+    )
   }
   scores.sort()
   println(scores)
