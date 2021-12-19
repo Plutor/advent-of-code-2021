@@ -19,3 +19,4 @@ I am also trying to code on Windows with [Sublime Text 4](https://www.sublimetex
   - ctrl-shift-P and "git: push" to push to Github
 * `fold()`/`reduce()` on collections is fun and powerful
 * When I go back to coding Go, I miss two things: `if`/`when` as expressions, and the always-on string templates.
+* `?.let()` is very very cool, but it's also incredible poorly named.
