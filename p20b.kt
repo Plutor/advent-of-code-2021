@@ -13,31 +13,27 @@ fun main() {
   println("Got image with ${img.size} lit pixels and ${alg.size} enhancement rule")
 
   println(img.size)
-  img = enhance(alg, img, -10..110)
-  println(img.size)
-  img = enhance(alg, img, -10..110)
-  println(img.filter{it.first >= -2 && it.first <= 101 && it.second >= -2 && it.second <= 101}.size)
+  (1..50).forEach { n->
+    img = enhance(alg, img, -105..205)
+    println(img.filter{(-1-n..100+n).contains(it.first) && (-1-n..100+n).contains(it.second)}.size)
+  }
 }
 
 fun enhance(alg: List<Boolean>, img: Set<Pair<Int,Int>>, r: IntRange): Set<Pair<Int,Int>> {
   var ivals = mutableMapOf<Pair<Int,Int>,Int>()
   r.forEach { x->
     r.forEach { y ->
-      ivals[Pair(x,y)] = 0
+      ivals[Pair(x,y)] = (if (img.contains(Pair(x-1,y-1))) 256 else 0) +
+                         (if (img.contains(Pair(x,y-1))) 128 else 0) +
+                         (if (img.contains(Pair(x+1,y-1))) 64 else 0) +
+                         (if (img.contains(Pair(x-1,y))) 32 else 0) +
+                         (if (img.contains(Pair(x,y))) 16 else 0) +
+                         (if (img.contains(Pair(x+1,y))) 8 else 0) +
+                         (if (img.contains(Pair(x-1,y+1))) 4 else 0) +
+                         (if (img.contains(Pair(x,y+1))) 2 else 0) +
+                         (if (img.contains(Pair(x+1,y+1))) 1 else 0)
     }
   }
-  img.forEach {
-    incr(ivals, it.first-1, it.second-1, 1)
-    incr(ivals, it.first, it.second-1, 2)
-    incr(ivals, it.first+1, it.second-1, 4)
-    incr(ivals, it.first-1, it.second, 8)
-    incr(ivals, it.first, it.second, 16)
-    incr(ivals, it.first+1, it.second, 32)
-    incr(ivals, it.first-1, it.second+1, 64)
-    incr(ivals, it.first, it.second+1, 128)
-    incr(ivals, it.first+1, it.second+1, 256)
-  }
-  println(ivals.filterKeys{it.second == 0})
   return ivals.filterValues{alg[it]}.keys
 }
 
